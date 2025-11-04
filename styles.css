@@ -1,0 +1,64 @@
+body {
+    font-family: 'Georgia', serif;
+    background: #f2ede3;
+    color: #3b2c1a;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 2.3em;
+    margin-bottom: 20px;
+  }
+  
+  #juego {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    grid-gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .carta {
+    width: 100px;
+    height: 100px;
+    background: #d7c9a3;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .carta:hover {
+    transform: scale(1.05);
+  }
+  
+  .volteada {
+    background: #fff6dc;
+    font-size: 1em;
+    color: #3b2c1a;
+  }
+  
+  #resultado {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  button {
+    margin-top: 25px;
+    padding: 10px 20px;
+    border: none;
+    background: #6d4c41;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #8d6e63;
+  }
+  
