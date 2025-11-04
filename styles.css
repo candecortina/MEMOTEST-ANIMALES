@@ -1,64 +1,97 @@
-body {
-    font-family: 'Georgia', serif;
-    background: #f2ede3;
-    color: #3b2c1a;
-    text-align: center;
+* {
+    box-sizing: border-box;
     margin: 0;
-    padding: 20px;
+    padding: 0;
   }
   
-  h1 {
-    font-size: 2.3em;
-    margin-bottom: 20px;
-  }
-  
-  #juego {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    grid-gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
-  }
-  
-  .carta {
-    width: 100px;
-    height: 100px;
-    background: #d7c9a3;
-    border-radius: 12px;
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #2d2255);
+    color: #fff;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2em;
-    cursor: pointer;
-    transition: transform 0.3s;
   }
   
-  .carta:hover {
-    transform: scale(1.05);
+  .hidden {
+    display: none;
   }
   
-  .volteada {
-    background: #fff6dc;
-    font-size: 1em;
-    color: #3b2c1a;
+  .start-screen, .win-screen {
+    text-align: center;
+    max-width: 400px;
   }
   
-  #resultado {
-    margin-top: 20px;
-    font-weight: bold;
+  h1 {
+    margin-bottom: 15px;
+    font-size: 2rem;
+  }
+  
+  p {
+    margin-bottom: 25px;
+    color: #ddd;
   }
   
   button {
-    margin-top: 25px;
-    padding: 10px 20px;
+    background: #6c5ce7;
+    color: #fff;
     border: none;
-    background: #6d4c41;
-    color: white;
-    border-radius: 10px;
+    padding: 12px 25px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
   }
   
   button:hover {
-    background: #8d6e63;
+    background: #a29bfe;
+  }
+  
+  .game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .memory-game {
+    width: 600px;
+    max-width: 90vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .memory-card {
+    width: 100%;
+    aspect-ratio: 1/1;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    cursor: pointer;
+  }
+  
+  .memory-card.flip {
+    transform: rotateY(180deg);
+  }
+  
+  .front-face, .back-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    backface-visibility: hidden;
+  }
+  
+  .back-face {
+    background: #2f2b50 url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Question_mark_white_icon.svg/800px-Question_mark_white_icon.svg.png') center/40% no-repeat;
+  }
+  
+  .front-face {
+    transform: rotateY(180deg);
+    border: 2px solid #a29bfe;
   }
   

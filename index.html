@@ -3,15 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memonatura</title>
+  <title>MemoTest de Animales Extintos</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🦣 Memonatura</h1>
-  <p>Encontrá todos los animales extintos antes de que se olviden 🌍</p>
-  <div id="juego"></div>
-  <div id="resultado"></div>
-  <button onclick="reiniciarJuego()">Reiniciar</button>
+  <div class="start-screen" id="startScreen">
+    <h1>MemoTest: Animales Extintos</h1>
+    <p>Encuentra todas las parejas y aprendé sobre especies que ya no existen 🦣</p>
+    <button id="startBtn">Comenzar</button>
+  </div>
+
+  <div class="game-container hidden" id="gameContainer">
+    <h2>Intentos: <span id="moves">0</span></h2>
+    <div class="memory-game" id="memoryGame"></div>
+  </div>
+
+  <div class="win-screen hidden" id="winScreen">
+    <h1>¡Felicidades! 🌍</h1>
+    <p>Completaste el MemoTest y ayudaste a recordar especies perdidas.</p>
+    <button id="restartBtn">Jugar de nuevo</button>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
