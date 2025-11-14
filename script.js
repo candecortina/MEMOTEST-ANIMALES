@@ -1,112 +1,120 @@
-const startBtn = document.getElementById('startBtn');
-const restartBtn = document.getElementById('restartBtn');
-const startScreen = document.getElementById('startScreen');
-const winScreen = document.getElementById('winScreen');
-const gameContainer = document.getElementById('gameContainer');
-const memoryGame = document.getElementById('memoryGame');
-const movesText = document.getElementById('moves');
-
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let moves = 0;
-
-const animals = [
-  "https://upload.wikimedia.org/wikipedia/commons/5/5b/Woolly_mammoth.png", // mamut
-  "https://upload.wikimedia.org/wikipedia/commons/f/f7/Dodo_1.jpg", // dodo
-  "https://upload.wikimedia.org/wikipedia/commons/0/03/Tasmanian_Tiger.jpg", // tilacino
-  "https://upload.wikimedia.org/wikipedia/commons/8/82/Megalodon_BW.jpg", // megalodon
-  "https://upload.wikimedia.org/wikipedia/commons/a/ad/Saber-toothed_tiger.png", // smilodon
-  "https://upload.wikimedia.org/wikipedia/commons/8/84/Quagga_photo.jpg" // quagga
+const obras = [
+  { id: 1, nombre: "La Mona Lisa", artista: "Leonardo da Vinci", año: 1503, descripcion: "Una de las pinturas más famosas del mundo, célebre por su sonrisa enigmática.", img: "monalisa.jpg" },
+  { id: 2, nombre: "El Grito", artista: "Edvard Munch", año: 1893, descripcion: "Icono del expresionismo, representa la angustia existencial humana.", img: "scream.jpg" },
+  { id: 3, nombre: "La Noche Estrellada", artista: "Vincent van Gogh", año: 1889, descripcion: "Paisaje nocturno con un cielo en movimiento lleno de energía.", img: "lanochestrellada.jpg" },
+  { id: 4, nombre: "La Joven de la Perla", artista: "Johannes Vermeer", año: 1665, descripcion: "Conocida como la 'Mona Lisa del Norte', destaca por su iluminación y mirada.", img: "laperla.jpg" },
+  { id: 5, nombre: "La Persistencia de la Memoria", artista: "Salvador Dalí", año: 1931, descripcion: "Famosa por sus relojes derretidos, simboliza la distorsión del tiempo.", img: "persistencia.jpg" }
 ];
 
-let cards = [];
+// Duplicar cartas
+let cartas = [...obras, ...obras];
+cartas = cartas.sort(() => Math.random() - 0.5);
 
-function createBoard() {
-  cards = [...animals, ...animals]
-    .sort(() => 0.5 - Math.random())
-    .map(src => {
-      const card = document.createElement('div');
-      card.classList.add('memory-card');
-      card.innerHTML = `
-        <div class="front-face" style="background-image: url('${src}')"></div>
-        <div class="back-face"></div>
-      `;
-      card.addEventListener('click', flipCard);
-      return card;
-    });
+let primera = null;
+let segunda = null;
+let bloqueado = false;
+let paresEncontrados = 0;
 
-  memoryGame.innerHTML = "";
-  cards.forEach(card => memoryGame.appendChild(card));
+const tablero = document.getElementById("tablero");
+const timer = document.getElementById("timer");
+
+let tiempo = 45 * 60; 
+let intervalo;
+
+function iniciarTimer() {
+  intervalo = setInterval(() => {
+      tiempo--;
+      const min = Math.floor(tiempo / 60);
+      const seg = tiempo % 60;
+      timer.textContent = `${min}:${seg.toString().padStart(2, "0")}`;
+
+      if (tiempo <= 0) perder();
+  }, 1000);
 }
 
-function flipCard() {
-  if (lockBoard || this === firstCard) return;
-  this.classList.add('flip');
+function crearTablero() {
+  tablero.innerHTML = "";
+  cartas.forEach((carta) => {
+      const div = document.createElement("div");
+      div.classList.add("carta");
+      div.dataset.id = carta.id;
 
-  if (!hasFlippedCard) {
-    hasFlippedCard = true;
-    firstCard = this;
-    return;
-  }
+      div.innerHTML = `<img src="back.jpg">`;
 
-  secondCard = this;
-  checkMatch();
+      div.addEventListener("click", () => {
+          if (bloqueado) return;
+          if (div.classList.contains("descubierta")) return;
+
+          div.classList.add("descubierta");
+          div.innerHTML = `<img src="${carta.img}">`;
+
+          if (!primera) {
+              primera = div;
+          } else {
+              segunda = div;
+              validarPareja();
+          }
+      });
+
+      tablero.appendChild(div);
+  });
 }
 
-function checkMatch() {
-  const match =
-    firstCard.querySelector('.front-face').style.backgroundImage ===
-    secondCard.querySelector('.front-face').style.backgroundImage;
+function validarPareja() {
+  bloqueado = true;
 
-  if (match) {
-    disableCards();
+  if (primera.dataset.id === segunda.dataset.id) {
+      paresEncontrados++;
+
+      if (paresEncontrados === obras.length) ganar();
+
+      primera = null;
+      segunda = null;
+      bloqueado = false;
   } else {
-    unflipCards();
-  }
+      setTimeout(() => {
+          primera.innerHTML = `<img src="back.jpg">`;
+          segunda.innerHTML = `<img src="back.jpg">`;
 
-  moves++;
-  movesText.textContent = moves;
-}
+          primera.classList.remove("descubierta");
+          segunda.classList.remove("descubierta");
 
-function disableCards() {
-  firstCard.removeEventListener('click', flipCard);
-  secondCard.removeEventListener('click', flipCard);
-
-  resetBoard();
-
-  if (document.querySelectorAll('.memory-card.flip').length === cards.length) {
-    setTimeout(() => {
-      gameContainer.classList.add('hidden');
-      winScreen.classList.remove('hidden');
-    }, 600);
+          primera = null;
+          segunda = null;
+          bloqueado = false;
+      }, 1000);
   }
 }
 
-function unflipCards() {
-  lockBoard = true;
-  setTimeout(() => {
-    firstCard.classList.remove('flip');
-    secondCard.classList.remove('flip');
-    resetBoard();
-  }, 900);
+function ganar() {
+  clearInterval(intervalo);
+  document.getElementById("ganaste").classList.remove("oculto");
 }
 
-function resetBoard() {
-  [hasFlippedCard, lockBoard] = [false, false];
-  [firstCard, secondCard] = [null, null];
+function perder() {
+  clearInterval(intervalo);
+  document.getElementById("perdiste").classList.remove("oculto");
 }
 
-startBtn.addEventListener('click', () => {
-  startScreen.classList.add('hidden');
-  gameContainer.classList.remove('hidden');
-  createBoard();
-});
+function mostrarGaleria() {
+  document.getElementById("galeria").classList.remove("oculto");
+  const cont = document.getElementById("contenedor-obras");
 
-restartBtn.addEventListener('click', () => {
-  winScreen.classList.add('hidden');
-  gameContainer.classList.remove('hidden');
-  moves = 0;
-  movesText.textContent = moves;
-  createBoard();
-});
+  obras.forEach(o => {
+      cont.innerHTML += `
+          <div class="obra">
+              <img src="${o.img}">
+              <h3>${o.nombre} — ${o.artista}</h3>
+              <p><strong>Año:</strong> ${o.año}</p>
+              <p>${o.descripcion}</p>
+          </div>
+      `;
+  });
+}
+
+document.getElementById("btnComenzar").onclick = () => {
+  document.getElementById("inicio").style.display = "none";
+  timer.style.display = "block";
+  crearTablero();
+  iniciarTimer();
+};
