@@ -3,51 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memotest de Arte</title>
+    <title>Art Match</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Pantalla de inicio -->
-    <div id="inicio" class="pantalla-inicio">
-        <h1>Memotest de Obras de Arte</h1>
-        <p>Encontrá los pares y descubrí la galería completa al terminar.</p>
+    <h1 class="titulo">ART MATCH</h1>
 
-        <h2>Instrucciones</h2>
-        <ul>
-            <li>Tenés 45 minutos para completar el memotest.</li>
-            <li>Al encontrar cada par, se agregará a tu galería final.</li>
-            <li>Al completar todos los pares vas a ver la historia de cada obra.</li>
-        </ul>
-
-        <button id="btnComenzar">Comenzar</button>
+    <div class="instrucciones">
+        <h2>Instrucciones de juego</h2>
+        <p>Hacé clic en las tarjetas para descubrir las obras. Encontrá las parejas para desbloquear la información de cada una.</p>
     </div>
 
-    <!-- Timer -->
-    <div id="timer">45:00</div>
-
-    <!-- Tablero -->
-    <div id="tablero" class="tablero"></div>
-
-    <!-- Cartel Ganaste -->
-    <div id="ganaste" class="cartel oculto">
-        <h2>¡Felicidades!</h2>
-        <p>Completaste todas las obras.</p>
-        <button onclick="mostrarGaleria()">Ver galería</button>
+    <div class="game-container">
+        <div id="gameBoard"></div>
     </div>
 
-    <!-- Cartel Perdiste -->
-    <div id="perdiste" class="cartel oculto">
-        <h2>¡Tiempo agotado!</h2>
-        <p>No pudiste completar todas las obras.</p>
-        <button onclick="location.reload()">Intentar otra vez</button>
-    </div>
-
-    <!-- Galería final -->
-    <div id="galeria" class="galeria oculto">
-        <h2>Galería final</h2>
-        <div id="contenedor-obras" class="contenedor-obras"></div>
-        <button onclick="location.reload()">Volver a jugar</button>
+    <!-- Modal de información -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2 id="obraTitulo"></h2>
+            <p id="obraDescripcion"></p>
+        </div>
     </div>
 
     <script src="script.js"></script>
